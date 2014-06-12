@@ -29,6 +29,11 @@ create the necessary ``var`` structure for our log files, unix sockets and pid f
 
   $ mkdir -p var/log && mkdir -p var/run && mkdir var/supervisor
 
+
+create an other-addons directory were you'll be able to put all your specific addons for Odoo::
+
+ $ mkdir -p other-addons
+
  
 Finally run your docker::
 
@@ -38,6 +43,6 @@ This means that the odoo process will read your config file and use the configur
 
 If something happend try to remove the ``-d`` flag from the command line to see the output on your console::
 
-  $ docker run -p 8069:8069 --name="odoo" -v `pwd`/etc:/opt/openerp/etc -v `pwd`/var:/opt/openerp/var xcgd/odoo
+  $ docker run -p 8069:8069 --name="odoo" -v `pwd`/etc:/opt/openerp/etc -v `pwd`/other-addons:/opt/openerp/additionnal_addons -v `pwd`/var:/opt/openerp/var -v `pwd`/other-addons:/opt/openerp/additionnal_addons xcgd/odoo
 
 If docker starts without issues, just open your favorite browser and point it to http://localhost:8069
