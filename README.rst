@@ -21,6 +21,23 @@ Running an instance
 
 To run an instance you'll need to prepare a configuration file for odoo on your host filesystem and to pass it to your docker::
 
-  $ docker run -d -p 8069:8069 --name="odoo" -v `pwd`/etc:/opt/openerp/etc xcgd/odoo
+  $ mkdir etc
+  $ cp <myopenerp-configfile.conf> etc/openerp.conf
 
-This means that the odoo process will read this file and use the configuration details to connect to the database server. So don't forget to put a real IP address reachable by the docker (ie: NOT 127.0.0.1 or localhost) for the database server entry
+
+create the necessary ``var`` structure for our log files, unix sockets and pid files::
+
+  $ mkdir -p var/log && mkdir -p var/run && mkdir var/supervisor
+
+ 
+Finally run your docker::
+
+  $ docker run -d -p 8069:8069 --name="odoo" -v `pwd`/etc:/opt/openerp/etc -v `pwd`/var:/opt/openerp/var xcgd/odoo
+
+This means that the odoo process will read your config file and use the configuration details to connect to the database server. So don't forget to put a real IP address reachable by the docker (ie: NOT 127.0.0.1 or localhost) for the database server entry.
+
+If something happend try to remove the ``-d`` flag from the command line to see the output on your console::
+
+  $ docker run -p 8069:8069 --name="odoo" -v `pwd`/etc:/opt/openerp/etc -v `pwd`/var:/opt/openerp/var xcgd/odoo
+
+If docker starts without issues, just open your favorite browser and point it to http://localhost:8069
