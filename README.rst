@@ -37,12 +37,8 @@ create an other-addons directory were you'll be able to put all your specific ad
  
 Finally run your docker::
 
-  $ docker run -d -p 8069:8069 --name="odoo" -v `pwd`/etc:/opt/openerp/etc -v `pwd`/var:/opt/openerp/var xcgd/odoo
+  $ docker run -p 8069:8069 --name="odoo" --rm -v `pwd`/etc:/opt/openerp/etc -v `pwd`/other-addons:/opt/openerp/additionnal_addons -v `pwd`/var:/opt/openerp/var -v `pwd`/other-addons:/opt/openerp/additionnal_addons xcgd/odoo
 
 This means that the odoo process will read your config file and use the configuration details to connect to the database server. So don't forget to put a real IP address reachable by the docker (ie: NOT 127.0.0.1 or localhost) for the database server entry.
-
-If something happend try to remove the ``-d`` flag from the command line to see the output on your console::
-
-  $ docker run -p 8069:8069 --name="odoo" --rm -v `pwd`/etc:/opt/openerp/etc -v `pwd`/other-addons:/opt/openerp/additionnal_addons -v `pwd`/var:/opt/openerp/var -v `pwd`/other-addons:/opt/openerp/additionnal_addons xcgd/odoo
 
 If docker starts without issues, just open your favorite browser and point it to http://localhost:8069
