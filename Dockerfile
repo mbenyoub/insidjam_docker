@@ -16,7 +16,7 @@ RUN echo 'LANG="fr_FR.UTF-8"' > /etc/default/locale
 # DEPS
 # DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive; apt-get -y -q install python-software-properties software-properties-common
+RUN DEBIAN_FRONTEND=noninteractive; apt-get -y -q install python-software-properties software-properties-common build-essential pkg-config
 RUN apt-get -y -q install python-setuptools vim-nox python-virtualenv python-setuptools wget
 
 RUN DEBIAN_FRONTEND=noninteractive; apt-get -y -q install libxml2-dev libxslt1-dev libjpeg-turbo8-dev libldap2-dev libsasl2-dev libtiff4-dev libfreetype6-dev
@@ -32,12 +32,10 @@ RUN apt-get -y -q install postgresql-client-9.3 libpq-dev
 
 # install supervisor
 RUN apt-get -y -q install supervisor
-RUN mkdir -p /var/log/supervisor
-
-#RUN apt-get -y -q install openssh-server
+#RUN mkdir -p /var/log/supervisor
 
 # supervisor global conf to avoid detach
-ADD sources/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+ADD sources/supervisord.conf /etc/supervisor/supervisord.conf
 
 # supervisor application specific conf to run an OpenERP instance
 ADD sources/supervisord.openerp7.conf /etc/supervisor/conf.d/supervisord.openerp7.conf
@@ -51,10 +49,11 @@ RUN adduser --home=/opt/openerp --disabled-password --gecos "" --shell=/bin/bash
 
 # Add our build script
 ADD sources/install-openerp-as-openerp.sh /opt/openerp/install.sh
+# Run it
 RUN su - openerp -c "cd /opt/openerp && ./install.sh"
 RUN rm /opt/openerp/install.sh
 
-RUN chown openerp /var/log/supervisor
+RUN apt-get -y -q install libglib2.0-dev libxmlsec1-dev libxmlsec1-openssl
 
 # Run the rest of the commands as the ``openerp`` user
 USER openerp
@@ -64,17 +63,27 @@ ADD sources/oe /opt/openerp/sources/oe
 RUN cd /opt/openerp/sources && tar xzf oe/openerp-web.tgz
 RUN cd /opt/openerp/sources && tar xzf oe/openobject-server.tgz
 RUN cd /opt/openerp/sources && tar xzf oe/openobject-addons.tgz
+RUN cd /opt/openerp/sources && tar xzf oe/lasso-2.4.0.tar.gz
+
+# compile and install lasso (SAML2 for python)
+RUN cd /opt/openerp/sources/lasso-2.4.0 && ./configure --prefix=/opt/openerp/env-openerp --disable-java --disable-perl --disable-php5 --enable-gtk-doc-html=no --with-python=/opt/openerp/env-openerp/bin/python && make && make install
+
 # install the packages defined by openobject server inside our env
 RUN cd /opt/openerp/sources/openobject-server && /opt/openerp/env-openerp/bin/python setup.py develop
 
-RUN mkdir -p /opt/openerp/var/supervisor
-RUN mkdir -p /opt/openerp/var/run
+# specific need (not for openerp itself but for some modules
+RUN /opt/openerp/env-openerp/bin/pip install --upgrade sh
+RUN /opt/openerp/env-openerp/bin/pip install --upgrade requests
+
+# We do not create this dir... it must be provided at run time
+#RUN mkdir -p /opt/openerp/var/supervisor
+#RUN mkdir -p /opt/openerp/var/run
 
 # Expose the openerp port
 EXPOSE 8069
 
-VOLUME  ["/var/log/supervisor", "/opt/openerp/var/log"]
+#VOLUME  ["/var/log/supervisor", "/opt/openerp/var/log"]
 
 # Set the default command to run when starting the container
 # CMD ["/opt/openerp/env-openerp/bin/python", "/opt/openerp/sources/openobject-server/openerp-server", "-c", "/etc/openerp/openerp.conf"]
-CMD ["/usr/bin/supervisord", "-n"]
+CMD ["/usr/bin/supervisord", "-n", "-l", "/opt/openerp/var/supervisor/supervisord.log", "-j", "/opt/openerp/var/supervisor/supervisord.pid", "-c", "/etc/supervisor/supervisord.conf"]
