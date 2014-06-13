@@ -15,7 +15,6 @@ lxml==3.3.5
 mock==1.0.1
 psutil==2.1.1
 psycopg2==2.5.3
-py3o.template==0.5
 pyjon.utils==0.5
 pyparsing==1.5.7
 python-dateutil==1.5
