@@ -16,7 +16,6 @@ mock==1.0.1
 psutil==2.1.1
 psycopg2==2.5.3
 py3o.template==0.5
-pydot==1.0.28
 pyjon.utils==0.5
 pyparsing==1.5.7
 python-dateutil==1.5
@@ -31,3 +30,5 @@ vobject==0.8.1c
 wheel==0.23.0
 wsgiref==0.1.2
 xlwt==0.7.5
+pychelin==0.1
+weekdays==0.3.1
