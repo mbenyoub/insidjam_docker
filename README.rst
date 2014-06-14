@@ -16,8 +16,8 @@ This is important to do in this way (as opposed to nightly build) because we wan
   - openerp-web       4181
 
 
-Prerequisits
-============
+Prerequisites
+=============
 
 xcgd/odoo_datastore
 -------------------
