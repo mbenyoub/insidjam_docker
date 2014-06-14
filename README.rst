@@ -48,6 +48,8 @@ And start PG::
 
   $ docker run --rm --name="pg93" --volumes-from postgresql_data xcgd/postgresql
 
+.. _xcgd/postgresql: https://registry.hub.docker.com/u/xcgd/postgresql/
+
 Start Odoo
 ----------
 
