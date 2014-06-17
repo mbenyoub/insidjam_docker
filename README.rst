@@ -19,47 +19,23 @@ This is important to do in this way (as opposed to nightly build) because we wan
 Prerequisites
 =============
 
-xcgd/odoo_datastore
--------------------
-
-To run an instance you'll need to have also installed `xcgd/odoo_datastore`_ and to edit the ``/opt/openerp/etc/openerp.conf`` file inside it::
-
-  $ docker run -i -t --name odoo_data xcgd/odoo_datastore true
-
-.. _xcgd/odoo_datastore: https://registry.hub.docker.com/u/xcgd/odoo-datastore/
-
-xcgd/postgresql_datastore
--------------------------
-
-You'll also need to have a datastore for postgreql from `xcgd/postgresql_datastore`_::
-
-  $ docker run -i -t --name postgresql_data xcgd/postgresql_datastore true
-
-.. _xcgd/postgresql_datastore: https://registry.hub.docker.com/u/xcgd/postgresql_datastore/
-
 xcgd/postgresql
 ---------------
 
-And last but not least you'll need `xcgd/postgresql`_::
+you'll need `xcgd/postgresql`_ docker image::
 
-  $ docker run --rm --name="pg93" --volumes-from postgresql_data -u root xcgd/postgresql /bin/bash /srv/initdb.sh
-
-And start PG::
-
-  $ docker run --rm --name="pg93" --volumes-from postgresql_data xcgd/postgresql
+  $ docker run --name="pg93" xcgd/postgresql
 
 .. _xcgd/postgresql: https://registry.hub.docker.com/u/xcgd/postgresql/
+
+Note: do not remove your container as you data volumes is bound to it.
 
 Start Odoo
 ----------
 
-On first run only you'll need to initialize everything with (assuming you named your datastore container odoo_data)::
+Run your docker, assuming you named your postgresql docker pg93 as we did above::
 
-  $ docker run --rm --volumes-from odoo_data -u root xcgd/odoo /bin/bash /opt/openerp/var/takeownership.sh
-
-Finally run your docker, assuming you named your postgresql docker pg93 as we did above::
-
-  $ docker run -p 8069:8069 --rm --name="xcgd.odoo" --link pg93:db --volumes-from odoo_data xcgd/odoo 
+  $ docker run -p 8069:8069 --rm --name="xcgd.odoo" --link pg93:db xcgd/odoo 
 
 
 WARNING: note that we aliased the postgresl as ``db``. This is MANDATORY since we use this alias in the configuration files.
