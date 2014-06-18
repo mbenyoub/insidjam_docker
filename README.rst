@@ -28,7 +28,7 @@ you'll need `xcgd/postgresql`_ docker image::
 
 .. _xcgd/postgresql: https://registry.hub.docker.com/u/xcgd/postgresql/
 
-Note: do not remove your container as you data volumes is bound to it.
+Note: do not remove your container as your data volumes are bound to it.
 
 Start Odoo
 ----------
