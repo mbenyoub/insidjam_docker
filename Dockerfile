@@ -17,11 +17,11 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc
             supervisor adduser python postgresql-client \
             python-dateutil python-docutils python-feedparser \
             python-gdata python-jinja2 python-ldap python-libxslt1 \
-            python-lxml python-mako python-mock python-openid python-psutil \
+            python-mako python-mock python-openid python-psutil \
             python-psycopg2 python-pybabel python-pychart python-pydot \
-            python-pyparsing python-reportlab python-simplejson python-tz \
-            python-unittest2 python-vatnumber python-vobject python-webdav \
-            python-werkzeug python-xlwt python-yaml python-zsi \
+            python-reportlab python-simplejson python-tz \
+            python-unittest2 python-vatnumber python-vobject \
+            python-xlwt python-yaml python-zsi \
             python-pydot \
             python-genshi \
             python-lasso \
@@ -31,41 +31,49 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc
             python-matplotlib \
             python-pip
 
+RUN pip install --upgrade pip
+RUN pip install wheel
+# use sourced wheels for proper versions of listed packages
+ADD sources/wheelhouse /opt/wheelhouse
+RUN pip install --use-wheel --no-index --find-links=/opt/wheelhouse lxml
+RUN pip install --use-wheel --no-index --find-links=/opt/wheelhouse pyparsing
+RUN pip install --use-wheel --no-index --find-links=/opt/wheelhouse werkzeug
+RUN pip install --use-wheel --no-index --find-links=/opt/wheelhouse pywebdav
 RUN easy_install -UZ py3o.template
 RUN pip install --upgrade pyjon.utils
+
+ADD sources/wkhtmltox-0.12.1_linux-trusty-amd64.deb /opt/sources/wkhtmltox-0.12.1_linux-trusty-amd64.deb
+RUN dpkg -i /opt/sources/wkhtmltox-0.12.1_linux-trusty-amd64.deb
 
 # supervisor global conf to avoid detach
 ADD sources/supervisord.conf /etc/supervisor/supervisord.conf
 
 # supervisor application specific conf to run an OpenERP instance
-ADD sources/supervisord.openerp7.conf /etc/supervisor/conf.d/supervisord.openerp7.conf
+ADD sources/supervisord.odoo7.conf /etc/supervisor/conf.d/supervisord.odoo7.conf
 
 # create the openerp user
-RUN adduser --home=/opt/openerp --disabled-password --gecos "" --shell=/bin/bash openerp
+RUN adduser --home=/opt/odoo --disabled-password --gecos "" --shell=/bin/bash odoo
 
 # -----------------------------------------------------------------------------------
-# OPENERP user below
+# ODOO user below
 # -----------------------------------------------------------------------------------
-USER openerp
+USER odoo
 
 # ADD sources for the oe components
-ADD sources/oe /opt/openerp/oe
-RUN /bin/bash -c "mkdir -p /opt/openerp/{bin,etc,sources,additionnal_addons}" && \
-    cd /opt/openerp/sources && \
-        tar xzf /opt/openerp/oe/openerp-web.tgz && \
-        tar xzf /opt/openerp/oe/openobject-server.tgz && \
-        tar xzf /opt/openerp/oe/openobject-addons.tgz
+# ADD always give root permission only
+ADD sources/odoo /opt/sources/
+RUN /bin/bash -c "mkdir -p /opt/odoo/{bin,etc,sources,additionnal_addons}" && \
+    cd /opt/odoo/sources && \
+        tar xzf /opt/sources/odoo.tgz
 
-ADD sources/openerp.conf /opt/openerp/etc/openerp.conf
-ADD sources/wkhtmltopdf-amd64 /opt/openerp/bin/wkhtmltopdf-amd64
+ADD sources/openerp.conf /opt/odoo/etc/openerp.conf
 
+RUN /bin/bash -c "mkdir -p /opt/odoo/var/{supervisor,run,log,egg-cache}"
 
-RUN /bin/bash -c "mkdir -p /opt/openerp/var/{supervisor,run,log,egg-cache}"
-
-# Expose the openerp port
+# Expose the odoo port
 EXPOSE 8069
 
-VOLUME ["/opt/openerp/var", "/opt/openerp/etc", "/opt/openerp/additionnal_addons"]
+VOLUME ["/opt/odoo/var", "/opt/odoo/etc", "/opt/odoo/additionnal_addons"]
 
 # Set the default command to run when starting the container
-CMD ["/usr/bin/supervisord", "-n", "-l", "/opt/openerp/var/supervisor/supervisord.log", "-j", "/opt/openerp/var/supervisor/supervisord.pid", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-n", "-l", "/opt/odoo/var/supervisor/supervisord.log", "-j", "/opt/odoo/var/supervisor/supervisord.pid", "-c", "/etc/supervisor/supervisord.conf"]

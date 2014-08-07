@@ -10,10 +10,8 @@ Odoo version
 
 This docker builds with a specific version of odoo we manually pin revisions our team has validated.
 This is important to do in this way (as opposed to nightly build) because we want to ensure reliability for our clients:
-
-  - openobject-addons 10030
-  - openobject-server 5288
-  - openerp-web       4181
+from https://github.com/odoo/odoo.git
+  - odoo	7.0	dd4d72d710
 
 
 Prerequisites
