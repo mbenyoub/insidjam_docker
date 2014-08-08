@@ -31,16 +31,13 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc
             python-matplotlib \
             python-pip
 
-RUN pip install --upgrade pip
-RUN pip install wheel
-# use sourced wheels for proper versions of listed packages
-ADD sources/wheelhouse /opt/wheelhouse
-RUN pip install --use-wheel --no-index --find-links=/opt/wheelhouse lxml
-RUN pip install --use-wheel --no-index --find-links=/opt/wheelhouse pyparsing
-RUN pip install --use-wheel --no-index --find-links=/opt/wheelhouse werkzeug
-RUN pip install --use-wheel --no-index --find-links=/opt/wheelhouse pywebdav
+ADD sources/pip-req.txt /opt/sources/pip-req.txt
+# use wheels from our public wheekhouse for proper versions of listed packages
+# as described in sourcesd pip-req.txt
+RUN pip install --upgrade --use-wheel --no-index --find-links=https://wheelhouse.openerp-experts.net -r /opt/sources/pip-req.txt
+
+# must unzip this package to make it visible as an odoo external dependency
 RUN easy_install -UZ py3o.template
-RUN pip install --upgrade pyjon.utils
 
 ADD sources/wkhtmltox-0.12.1_linux-trusty-amd64.deb /opt/sources/wkhtmltox-0.12.1_linux-trusty-amd64.deb
 RUN dpkg -i /opt/sources/wkhtmltox-0.12.1_linux-trusty-amd64.deb
