@@ -1,0 +1,7 @@
+syntax: glob
+*.swp
+.tmp*
+*.orig
+example/var/egg-cache/*
+example/var/log/*
+example/var/supervisor/*
