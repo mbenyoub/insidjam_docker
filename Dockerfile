@@ -60,7 +60,7 @@ RUN /bin/bash -c "mkdir -p /opt/odoo/{bin,etc,sources/odoo,additionnal_addons}" 
     cd /opt/odoo/sources/odoo && \
         tar xzf /opt/sources/odoo.tgz
 
-ADD sources/openerp.conf /opt/odoo/etc/openerp.conf
+ADD sources/odoo.conf /opt/odoo/etc/odoo.conf
 
 RUN /bin/bash -c "mkdir -p /opt/odoo/var/{run,log,egg-cache}"
 
