@@ -31,7 +31,8 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc
             ghostscript \
             python-imaging \
             python-matplotlib \
-            python-pip
+            python-pip && \
+	aptitude safe-upgrade
 
 ADD sources/pip-req.txt /opt/sources/pip-req.txt
 # use wheels from our public wheekhouse for proper versions of listed packages
@@ -42,9 +43,8 @@ RUN pip install --upgrade --use-wheel --no-index --find-links=https://wheelhouse
 RUN easy_install -UZ py3o.template
 
 # install wkhtmltopdf based on QT5
-RUN wget --quiet http://sourceforge.net/projects/wkhtmltopdf/files/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb && \
-	dpkg -i wkhtmltox-0.12.1_linux-trusty-amd64.deb && \
-	rm wkhtmltox-0.12.1_linux-trusty-amd64.deb
+ADD sources/wkhtmltox-0.12.1_linux-trusty-amd64.deb /opt/sources/wkhtmltox-0.12.1_linux-trusty-amd64.deb
+RUN dpkg -i /opt/sources/wkhtmltox-0.12.1_linux-trusty-amd64.deb
 
 # create the openerp user
 RUN adduser --home=/opt/odoo --disabled-password --gecos "" --shell=/bin/bash odoo
