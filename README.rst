@@ -40,6 +40,12 @@ WARNING: note that we aliased the postgresl as ``db``. This is MANDATORY since w
 
 If docker starts without issues, just open your favorite browser and point it to http://localhost:8069
 
+If you want to change the odoo configuration with you own file you can do so easily like so::
+
+  # let's pretend your configuration is located under /opt/odoo/instance1/etc/ on your host machine, you can run it by
+
+  docker run --name="xcgd.odoo" -v /opt/odoo/instance1/etc:/opt/odoo/etc -p 8069:8069 --link pg93:db -d xcgd/odoo
+
 Security Notes
 ==============
 
