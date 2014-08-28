@@ -11,6 +11,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B97B0AFCAA1A47F044F
 
 # Add PostgreSQL's repository. It contains the most recent stable release
 #     of PostgreSQL, ``9.3``.
+# install all odoo dependencies as distrib packages when possible as we use the system python
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
         apt-get update && \
         apt-get -yq install \
@@ -31,11 +32,18 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc
             ghostscript \
             python-imaging \
             python-matplotlib \
-            python-pip
+            python-pip \
+            python-decorator \
+            python-passlib \
+            python-serial \
+            python-qrcode \
+            python-requests \
+            python-pypdf 
 
 ADD sources/pip-req.txt /opt/sources/pip-req.txt
 # use wheels from our public wheekhouse for proper versions of listed packages
 # as described in sourcesd pip-req.txt
+# these are python dependencies for odoo when we need precompiled versions
 RUN pip install --upgrade --use-wheel --no-index --find-links=https://wheelhouse.openerp-experts.net -r /opt/sources/pip-req.txt
 
 # must unzip this package to make it visible as an odoo external dependency
@@ -56,7 +64,7 @@ USER odoo
 # ADD sources for the oe components
 # ADD always give root permission only
 ADD sources/odoo /opt/sources/
-RUN /bin/bash -c "mkdir -p /opt/odoo/{bin,etc,sources/odoo,additionnal_addons}" && \
+RUN /bin/bash -c "mkdir -p /opt/odoo/{bin,etc,sources/odoo,additionnal_addons,data}" && \
     cd /opt/odoo/sources/odoo && \
         tar xzf /opt/sources/odoo.tgz
 
@@ -67,7 +75,7 @@ RUN /bin/bash -c "mkdir -p /opt/odoo/var/{run,log,egg-cache}"
 # Expose the odoo port
 EXPOSE 8069
 
-VOLUME ["/opt/odoo/var", "/opt/odoo/etc", "/opt/odoo/additionnal_addons"]
+VOLUME ["/opt/odoo/var", "/opt/odoo/etc", "/opt/odoo/additionnal_addons", "/opt/odoo/data"]
 
 # Set the default command to run when starting the container
 CMD ["/usr/bin/python", "/opt/odoo/sources/odoo/openerp-server", "-c", "/opt/odoo/etc/odoo.conf"]

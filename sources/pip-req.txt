@@ -5,3 +5,9 @@ pyparsing
 werkzeug
 pywebdav
 pyjon.utils
+psycogreen
+pillow
+python-dateutil
+pyusb>=1.0.0b1
+gevent
+pyopenssl
