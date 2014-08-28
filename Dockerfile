@@ -12,9 +12,11 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B97B0AFCAA1A47F044F
 # Add PostgreSQL's repository. It contains the most recent stable release
 #     of PostgreSQL, ``9.3``.
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
-        apt-get update && apt-get -y -q install \
+        apt-get update && \
+        apt-get -yq install \
+            adduser
             postgresql-client-9.3 \
-            supervisor adduser python postgresql-client \
+            python \
             python-dateutil python-docutils python-feedparser \
             python-gdata python-jinja2 python-ldap python-libxslt1 \
             python-mako python-mock python-openid python-psutil \
@@ -39,14 +41,10 @@ RUN pip install --upgrade --use-wheel --no-index --find-links=https://wheelhouse
 # must unzip this package to make it visible as an odoo external dependency
 RUN easy_install -UZ py3o.template
 
-ADD sources/wkhtmltox-0.12.1_linux-trusty-amd64.deb /opt/sources/wkhtmltox-0.12.1_linux-trusty-amd64.deb
-RUN dpkg -i /opt/sources/wkhtmltox-0.12.1_linux-trusty-amd64.deb
-
-# supervisor global conf to avoid detach
-ADD sources/supervisord.conf /etc/supervisor/supervisord.conf
-
-# supervisor application specific conf to run an OpenERP instance
-ADD sources/supervisord.odoo7.conf /etc/supervisor/conf.d/supervisord.odoo7.conf
+# install wkhtmltopdf based on QT5
+RUN wget --quiet http://sourceforge.net/projects/wkhtmltopdf/files/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb && \
+	dpkg -i wkhtmltox-0.12.1_linux-trusty-amd64.deb && \
+	rm wkhtmltox-0.12.1_linux-trusty-amd64.deb
 
 # create the openerp user
 RUN adduser --home=/opt/odoo --disabled-password --gecos "" --shell=/bin/bash odoo
@@ -65,7 +63,7 @@ RUN /bin/bash -c "mkdir -p /opt/odoo/{bin,etc,sources,additionnal_addons}" && \
 
 ADD sources/openerp.conf /opt/odoo/etc/openerp.conf
 
-RUN /bin/bash -c "mkdir -p /opt/odoo/var/{supervisor,run,log,egg-cache}"
+RUN /bin/bash -c "mkdir -p /opt/odoo/var/{run,log,egg-cache}"
 
 # Expose the odoo port
 EXPOSE 8069
@@ -73,4 +71,4 @@ EXPOSE 8069
 VOLUME ["/opt/odoo/var", "/opt/odoo/etc", "/opt/odoo/additionnal_addons"]
 
 # Set the default command to run when starting the container
-CMD ["/usr/bin/supervisord", "-n", "-l", "/opt/odoo/var/supervisor/supervisord.log", "-j", "/opt/odoo/var/supervisor/supervisord.pid", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["/usr/bin/python", "/opt/odoo/sources/odoo/openerp-server", "-c", "/opt/odoo/etc/odoo.conf"]
