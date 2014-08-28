@@ -57,8 +57,8 @@ USER odoo
 # ADD sources for the oe components
 # ADD always give root permission only
 ADD sources/odoo /opt/sources/
-RUN /bin/bash -c "mkdir -p /opt/odoo/{bin,etc,sources,additionnal_addons}" && \
-    cd /opt/odoo/sources && \
+RUN /bin/bash -c "mkdir -p /opt/odoo/{bin,etc,sources/odoo,additionnal_addons}" && \
+    cd /opt/odoo/sources/odoo && \
         tar xzf /opt/sources/odoo.tgz
 
 ADD sources/openerp.conf /opt/odoo/etc/openerp.conf
