@@ -31,8 +31,7 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc
             ghostscript \
             python-imaging \
             python-matplotlib \
-            python-pip && \
-	aptitude safe-upgrade
+            python-pip
 
 ADD sources/pip-req.txt /opt/sources/pip-req.txt
 # use wheels from our public wheekhouse for proper versions of listed packages
