@@ -14,7 +14,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B97B0AFCAA1A47F044F
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
         apt-get update && \
         apt-get -yq install \
-            adduser
+            adduser \
             postgresql-client-9.3 \
             python \
             python-dateutil python-docutils python-feedparser \
