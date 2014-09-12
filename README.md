@@ -7,6 +7,7 @@ Odoo version
 This docker builds with a specific version of odoo (formerly OpenERP) . We manually pin revisions our team has validated.
 This is important to do in this way (as opposed to nightly builds) because we want to ensure reliability.
 Here are the current revisions from https://github.com/odoo/odoo for each docker tag
+
     # production grade
     xcgd/odoo:7.0	dd4d72d710ab9ffcc3143130a6b5feecf8ce7a5d (branch 7.0)
     xcgd/odoo:8.0	6244ec55c96db793f15cdb93a778ace0105074f8 (branch 8.0)
