@@ -56,7 +56,7 @@ RUN dpkg -i /opt/sources/wkhtmltox.deb
 # ADD sources for the oe components
 # ADD an URI always gives 600 permission with UID:GID 0
 # /!\ carefully select the source archive depending on the version
-ADD https://wheelhouse.openerp-experts.net/odoo/odoo9.tgz /opt/sources/odoo.tgz
+ADD https://wheelhouse.openerp-experts.net/odoo/odoo7.tgz /opt/sources/odoo.tgz
 
 RUN /bin/bash -c "mkdir -p /opt/odoo/{bin,etc,sources/odoo,additionnal_addons,data}" && \
     cd /opt/odoo/sources/odoo && \
@@ -73,5 +73,5 @@ VOLUME ["/opt/odoo/var", "/opt/odoo/etc", "/opt/odoo/additionnal_addons", "/opt/
 CMD ["/usr/bin/python", "/opt/odoo/sources/odoo/openerp-server", "-c", "/opt/odoo/etc/odoo.conf"]
 
 # Expose the odoo ports (for linked containers)
-EXPOSE 8069 8072
+EXPOSE 8069
 
