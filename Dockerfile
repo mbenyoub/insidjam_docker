@@ -1,5 +1,5 @@
-FROM ubuntu:14.04
-MAINTAINER florent.aide@xcg-consulting.fr
+FROM xcgd/ubuntu4base
+MAINTAINER alexandre.allouche@xcg-consulting.fr
 
 # generate locales
 RUN locale-gen en_US.UTF-8 && update-locale
@@ -50,8 +50,8 @@ RUN pip install --upgrade --use-wheel --no-index --find-links=https://wheelhouse
 RUN easy_install -UZ py3o.template
 
 # install wkhtmltopdf based on QT5
-ADD sources/wkhtmltox-0.12.1_linux-trusty-amd64.deb /opt/sources/wkhtmltox-0.12.1_linux-trusty-amd64.deb
-RUN dpkg -i /opt/sources/wkhtmltox-0.12.1_linux-trusty-amd64.deb
+ADD http://downloads.sourceforge.net/project/wkhtmltopdf/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb /opt/sources/wkhtmltox.deb
+RUN dpkg -i /opt/sources/wkhtmltox.deb
 
 # create the openerp user
 RUN adduser --home=/opt/odoo --disabled-password --gecos "" --shell=/bin/bash odoo

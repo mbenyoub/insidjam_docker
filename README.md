@@ -7,12 +7,13 @@ Odoo version
 This docker builds with a specific version of odoo (formerly OpenERP) . We manually pin revisions our team has validated.
 This is important to do in this way (as opposed to nightly builds) because we want to ensure reliability.
 Here are the current revisions from https://github.com/odoo/odoo for each docker tag
+
     # production grade
-    xcgd/odoo:7.0	dd4d72d710ab9ffcc3143130a6b5feecf8ce7a5d (branch 7.0)
-    xcgd/odoo:8.0	6244ec55c96db793f15cdb93a778ace0105074f8 (branch 8.0)
+    xcgd/odoo:7.0	df845940ed52040ef92b1b5759306c556fa38e66 (branch 7.0)
+    xcgd/odoo:8.0	78f3b94601d7cc2939232d3ec58e63be965524b0 (branch 8.0)
 
     # playing only
-    xcgd/odoo:latest	1e515a7a1cf39a35a38e4b1514ca2af838e29f51 (branch master/9alpha)
+    xcgd/odoo:latest	4df2e6dee377fc42e9021cb0c8f1c1e0e9b3772d (branch master/9alpha)
 
 Prerequisites
 =============
@@ -31,7 +32,7 @@ Start Odoo
 
 Run your docker, assuming you named your postgresql docker pg93 as we did above:
 
-    $ docker run -p 8069:8069 --rm --name="xcgd.odoo" --link pg93:db xcgd/odoo 
+    $ docker run -p 8069:8069 -p 8072:8072 --rm --name="xcgd.odoo" --link pg93:db xcgd/odoo:8.0 
 
 
 WARNING: note that we aliased the postgresl as ``db``. This is MANDATORY since we use this alias in the configuration files.
