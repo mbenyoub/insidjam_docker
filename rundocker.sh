@@ -1,4 +1,4 @@
 #!/bin/bash
 
-# this is what starts your ERP server
-docker run -p 8069:8069 --name="xcgd.odoo" --link pg93:db xcgd/odoo
+# this is what starts your ERP server with odoo version 8.0
+docker run -d -p 8069:8069 -p 8072:8072 --name="odoo8" --link pg93:db xcgd/odoo:8.0
