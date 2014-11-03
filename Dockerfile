@@ -53,15 +53,23 @@ RUN easy_install -UZ py3o.template
 ADD http://downloads.sourceforge.net/project/wkhtmltopdf/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb /opt/sources/wkhtmltox.deb
 RUN dpkg -i /opt/sources/wkhtmltox.deb
 
+# create the odoo user
+RUN adduser --home=/opt/odoo --disabled-password --gecos "" --shell=/bin/bash odoo
+
 # ADD sources for the oe components
-# ADD an URI always gives 600 permission with UID:GID 0
+# ADD an URI always gives 600 permission with UID:GID 0 => need to chmod accordingly
 # /!\ carefully select the source archive depending on the version
-ADD https://wheelhouse.openerp-experts.net/odoo/odoo7.tgz /opt/sources/odoo.tgz
+ADD https://wheelhouse.openerp-experts.net/odoo/odoo7.tgz /opt/odoo/odoo.tgz
+RUN chown odoo:odoo /opt/odoo/odoo.tgz
+
+# changing user is required by openerp which won't start with root
+# makes the container more unlikely to be unwillingly changed in interactive mode
+USER odoo
 
 RUN /bin/bash -c "mkdir -p /opt/odoo/{bin,etc,sources/odoo,additionnal_addons,data}" && \
     cd /opt/odoo/sources/odoo && \
-        tar xzf /opt/sources/odoo.tgz &&\
-        rm /opt/sources/odoo.tgz
+        tar xzf /opt/odoo/odoo.tgz &&\
+        rm /opt/odoo/odoo.tgz
 
 ADD sources/odoo.conf /opt/odoo/etc/odoo.conf
 
