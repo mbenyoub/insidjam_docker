@@ -13,6 +13,7 @@ Here are the current revisions from https://github.com/odoo/odoo for each docker
     xcgd/odoo:8.0	78f3b94601d7cc2939232d3ec58e63be965524b0 (branch 8.0)
 
     # playing only
+    # WARNING: this current alpha version won't start "as is" (refactoring in progress)
     xcgd/odoo:latest	4df2e6dee377fc42e9021cb0c8f1c1e0e9b3772d (branch master/9alpha)
 
 Prerequisites

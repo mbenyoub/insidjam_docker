@@ -1,0 +1,3 @@
+Usage: run [COMMAND ...]
+
+This docker is being "applified" and will provide several entry points

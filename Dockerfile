@@ -62,6 +62,7 @@ RUN adduser --home=/opt/odoo --disabled-password --gecos "" --shell=/bin/bash od
 ADD https://wheelhouse.openerp-experts.net/odoo/odoo9.tgz /opt/odoo/odoo.tgz
 RUN chown odoo:odoo /opt/odoo/odoo.tgz
 
+
 # changing user is required by openerp which won't start with root
 # makes the container more unlikely to be unwillingly changed in interactive mode
 USER odoo
@@ -71,15 +72,17 @@ RUN /bin/bash -c "mkdir -p /opt/odoo/{bin,etc,sources/odoo,additionnal_addons,da
         tar xzf /opt/odoo/odoo.tgz &&\
         rm /opt/odoo/odoo.tgz
 
-ADD sources/odoo.conf /opt/odoo/etc/odoo.conf
-
 RUN /bin/bash -c "mkdir -p /opt/odoo/var/{run,log,egg-cache}"
 
+
+# Execution environment
+USER 0
+ADD sources/odoo.conf /opt/odoo/etc/odoo.conf
+WORKDIR /app
 VOLUME ["/opt/odoo/var", "/opt/odoo/etc", "/opt/odoo/additionnal_addons", "/opt/odoo/data"]
-
-# Set the default command to run when starting the container
-CMD ["/usr/bin/python", "/opt/odoo/sources/odoo/openerp-server", "-c", "/opt/odoo/etc/odoo.conf"]
-
+# Set the default entrypoint (non overridable) to run when starting the container
+ENTRYPOINT ["/app/bin/boot"]
+CMD ["help"]
 # Expose the odoo ports (for linked containers)
 EXPOSE 8069 8072
-
+ADD bin /app/bin/
