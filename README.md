@@ -1,6 +1,11 @@
 A dockerfile for Odoo 7 & 8 & 9alpha
 ====================================
 
+!!!Latest changes!!!
+====================
+This image has just been "applified" and now behaves just like a binary application with several options.
+Try running ```docker run --rm xcgd/odoo``` and see what happens :)
+
 Odoo version
 ============
 
@@ -21,37 +26,39 @@ Prerequisites
 xcgd/postgresql
 ---------------
 
-you'll need [xcgd/postgresql][1] docker image or any other postgresql image of your choice that you link with odoo under the name `db`:
+you'll need [xcgd/postgresql][1] docker image or any other PostgreSQL image of your choice that you link with odoo under the name `db`:
 
     $ docker run --name="pg93" xcgd/postgresql
 
-Note: do not remove your PostgreSQL container as your data volumes are bound to it.
+Note: read the instructions on how to use this image with data persistance.
 
 Start Odoo
 ----------
 
-Run your docker, assuming you named your postgresql docker pg93 as we did above:
+Run odoo version 7.0, assuming you named your PostgreSQL container ``pg93`` as we did above:
 
-    $ docker run -p 8069:8069 -p 8072:8072 --rm --name="xcgd.odoo" --link pg93:db xcgd/odoo:8.0 
+    $ docker run -p 8069:8069 --rm --name="xcgd.odoo" --link pg93:db xcgd/odoo:7.0 start
 
 
-WARNING: note that we aliased the postgresl as ``db``. This is MANDATORY since we use this alias in the configuration files.
+WARNING: note that we aliased the PostgreSQL as ``db``. This is ARBITRARY since we use this alias in the configuration files.
 
-If docker starts without issues, just open your favorite browser and point it to http://localhost:8069
+If docker starts without issues, just open your favorite browser and point it to http://localhost:8069	
+
+The default admin password is somesuperstrongadminpasswdYOUNEEDTOCHANGEBEFORERUNNING
 
 If you want to change the odoo configuration with you own file you can do so easily like so: 
 
     # let's pretend your configuration is located under /opt/odoo/instance1/etc/ on your host machine, you can run it by
 
-    docker run --name="xcgd.odoo" -v /opt/odoo/instance1/etc:/opt/odoo/etc -p 8069:8069 --link pg93:db -d xcgd/odoo
+    $ docker run --name="xcgd.odoo" -v /opt/odoo/instance1/etc:/opt/odoo/etc -p 8069:8069 --link pg93:db -d xcgd/odoo start
 
 
 Security Notes
 ==============
 
-You'll note that we did not open ports to the outside world on the PostgreSQL container. This is for security reasons, NEVER RUN your Postgresql container with ports open to the outside world... Just link the openerp container to it as we did above.
+You'll note that we did not open ports to the outside world on the PostgreSQL container. This is for security reasons, NEVER RUN your PostgreSQL container with ports open to the outside world... Just link the openerp container to it as we did above.
 
-This is really important to understand. Posgtgresql is configured to trust everyone so better keep it firewalled. And before yelling madness please consider this: If someone gains access to your host and is able to launch a container and open a port for himself he's got your data anyways... he's on your machine. So keep that port closed and secure your host. You database is as safe as your host is, no more.
+This is really important to understand. PostgreSQL is configured to trust everyone so better keep it firewalled. And before yelling madness please consider this: If someone gains access to your host and is able to launch a container and open a port for himself he's got your data anyways... he's on your machine. So keep that port closed and secure your host. You database is as safe as your host is, no more.
 
 
   [1]: https://registry.hub.docker.com/u/xcgd/postgresql/
