@@ -14,7 +14,14 @@ function help {
 
 function login  {
     echo "Running bash"
-    sudo su - odoo
+    set +e
+    if [[ ! -e $1 && $1 = "root" ]]; then
+        /bin/bash
+    else
+        sudo su - odoo
+    fi
+    SERVICE_PID=$!
+    set -e
 }
 
 function start {
