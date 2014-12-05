@@ -11,40 +11,31 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B97B0AFCAA1A47F044F
 
 # Add PostgreSQL's repository. It contains the most recent stable release
 #     of PostgreSQL, ``9.3``.
-# install all odoo dependencies as distrib packages when possible as we use the system python
+# install dependencies as distrib packages when system bindings are required
+# some of them extend the basic odoo requirements for a better "apps" compatibility
+# most dependencies are distributed as wheel packages at the next step
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
         apt-get update && \
         apt-get -yq install \
             adduser \
+            ghostscript \
             postgresql-client-9.3 \
             python \
-            python-dateutil python-docutils python-feedparser \
-            python-gdata python-jinja2 python-ldap python-libxslt1 \
-            python-mako python-mock python-openid python-psutil \
-            python-psycopg2 python-pybabel python-pychart python-pydot \
-            python-reportlab python-simplejson python-tz \
-            python-unittest2 python-vatnumber python-vobject \
-            python-xlwt python-yaml python-zsi \
-            python-pydot \
-            python-genshi \
-            python-lasso \
-            graphviz \
-            ghostscript \
-            python-imaging \
-            python-matplotlib \
-            python-pip \
-            python-decorator \
-            python-passlib \
-            python-serial \
-            python-qrcode \
-            python-requests \
-            python-pypdf 
+                python-pip \
+                python-imaging \
+                python-pychart python-libxslt1 \
+                libxrender1 libxext6 fontconfig \
+                python-zsi \
+                python-lasso 
 
 ADD sources/pip-req.txt /opt/sources/pip-req.txt
-# use wheels from our public wheekhouse for proper versions of listed packages
-# as described in sourcesd pip-req.txt
-# these are python dependencies for odoo when we need precompiled versions
-RUN pip install --upgrade --use-wheel --no-index --find-links=https://wheelhouse.openerp-experts.net -r /opt/sources/pip-req.txt
+# use wheels from our public wheelhouse for proper versions of listed packages
+# as described in sourced pip-req.txt
+# these are python dependencies for odoo and "apps" as precompiled wheel packages
+
+RUN pip install --upgrade --use-wheel --no-index --pre \
+        --find-links=https://wheelhouse.openerp-experts.net/trusty/odoo/ \
+        --requirement=/opt/sources/pip-req.txt
 
 # must unzip this package to make it visible as an odoo external dependency
 RUN easy_install -UZ py3o.template

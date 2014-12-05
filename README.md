@@ -5,6 +5,7 @@ A dockerfile for Odoo 7 & 8 & 9alpha
 ====================
 This image has just been "applified" and now behaves just like a binary application with several options.
 Try running ```docker run --rm xcgd/odoo``` and see what happens :)
+Check the BitBucket project page for contributing and discussing.
 
 Odoo version
 ============
@@ -14,11 +15,11 @@ This is important to do in this way (as opposed to nightly builds) because we wa
 Here are the current revisions from https://github.com/odoo/odoo for each docker tag
 
     # production grade
-    xcgd/odoo:7.0	df845940ed52040ef92b1b5759306c556fa38e66 (branch 7.0)
-    xcgd/odoo:8.0	78f3b94601d7cc2939232d3ec58e63be965524b0 (branch 8.0)
+    xcgd/odoo:7.0	aa10972d13eeb2414bcfb0a0c402ef49573e1756 (branch 7.0)
+    xcgd/odoo:8.0	35431de125a73a79f574dddb60409131179c01b5 (branch 8.0)
 
     # playing only
-    xcgd/odoo:latest	4df2e6dee377fc42e9021cb0c8f1c1e0e9b3772d (branch master/9alpha)
+    xcgd/odoo:latest	b1e9363b6629d1f11a60f414dba0df105a21485f (branch master/9alpha)
 
 Prerequisites
 =============
