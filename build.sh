@@ -1,3 +1,3 @@
 #!/bin/bash
-docker build --rm -t xcgd/odoo .
+docker build --rm -t xcgd/odoo:8.0 .
 
