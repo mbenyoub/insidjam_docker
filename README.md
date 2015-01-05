@@ -3,23 +3,31 @@ A dockerfile for Odoo 7 & 8 & 9alpha
 
 !!!Latest changes!!!
 ====================
-This image has just been "applified" and now behaves just like a binary application with several options.
+This image has been "applified" and behaves just like a binary application with several options.
+
 Try running ```docker run --rm xcgd/odoo``` and see what happens :)
-Check the BitBucket project page for contributing and discussing.
+
+Check the [BitBucket project page][2] for contributing, discussing and reporting issues.
+This README is updated with regards to your questions. Thank you for your help!
+
+NB: the volume /opt/odoo/additional_addons has been renamed to fix a typo (courtesy of @blaggacao)
 
 Odoo version
 ============
 
 This docker builds with a specific version of odoo (formerly OpenERP) . We manually pin revisions our team has validated.
 This is important to do in this way (as opposed to nightly builds) because we want to ensure reliability.
+
+You may use your own sources simply by binding your local odoo folder to /opt/odoo/sources/odoo/
+
 Here are the current revisions from https://github.com/odoo/odoo for each docker tag
 
     # production grade
-    xcgd/odoo:7.0	aa10972d13eeb2414bcfb0a0c402ef49573e1756 (branch 7.0)
-    xcgd/odoo:8.0	35431de125a73a79f574dddb60409131179c01b5 (branch 8.0)
+    xcgd/odoo:7.0	1adb3de371949866acbb1225e3bc5cdbab2d2fac (branch 7.0)
+    xcgd/odoo:8.0	faee926f1bc8c5cc356cd45dc6f8b675f79984f2 (branch 8.0)
 
     # playing only
-    xcgd/odoo:latest	b1e9363b6629d1f11a60f414dba0df105a21485f (branch master/9alpha)
+    xcgd/odoo:latest	660b13bb7819fe3212bdf9fe450297b2852169ff (branch master/9alpha)
 
 Prerequisites
 =============
@@ -57,10 +65,10 @@ If you want to change the odoo configuration with you own file you can do so eas
 Security Notes
 ==============
 
-You'll note that we did not open ports to the outside world on the PostgreSQL container. This is for security reasons, NEVER RUN your PostgreSQL container with ports open to the outside world... Just link the openerp container to it as we did above.
+You'll note that we did not open ports to the outside world on the PostgreSQL container. This is for security reasons, NEVER RUN your PostgreSQL container with ports open to the outside world... Just *--link* the openerp container to it as we did above.
 
 This is really important to understand. PostgreSQL is configured to trust everyone so better keep it firewalled. And before yelling madness please consider this: If someone gains access to your host and is able to launch a container and open a port for himself he's got your data anyways... he's on your machine. So keep that port closed and secure your host. You database is as safe as your host is, no more.
 
 
   [1]: https://registry.hub.docker.com/u/xcgd/postgresql/
-
+  [2]: https://bitbucket.org/xcgd/odoo
