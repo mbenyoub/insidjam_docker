@@ -47,6 +47,13 @@ function on_exit() {
 }
 trap on_exit INT TERM
 
+echo "Search conf file"
+file="/opt/odoo/etc/odoo.conf"
+if [ ! -f "$file" ]; then
+    cp /opt/sources/odoo.conf /opt/odoo/etc/odoo.conf
+    echo "Copy template as conf file"
+fi
+chown -R odoo /opt/odoo
 echo "Running command..."
 for arg in "$*"
 do
