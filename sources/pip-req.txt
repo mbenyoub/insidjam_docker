@@ -9,6 +9,7 @@ pyjon.utils
 pyopenssl
 cffi
 cryptography
+suds
 # odoo official
 Babel
 Jinja2
