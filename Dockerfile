@@ -33,7 +33,8 @@ ADD sources/pip-req.txt /opt/sources/pip-req.txt
 # as described in sourced pip-req.txt
 # these are python dependencies for odoo and "apps" as precompiled wheel packages
 
-RUN pip install --upgrade --use-wheel --no-index --pre \
+RUN pip install peep && \
+    peep install --upgrade --use-wheel --no-index --pre \
         --find-links=https://wheelhouse.openerp-experts.net/trusty/odoo/ \
         --requirement=/opt/sources/pip-req.txt
 
