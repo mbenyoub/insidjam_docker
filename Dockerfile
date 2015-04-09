@@ -52,6 +52,7 @@ RUN adduser --home=/opt/odoo --disabled-password --gecos "" --shell=/bin/bash od
 # ADD an URI always gives 600 permission with UID:GID 0 => need to chmod accordingly
 # /!\ carefully select the source archive depending on the version
 ADD https://wheelhouse.openerp-experts.net/odoo/odoo9.tgz /opt/odoo/odoo.tgz
+RUN echo "04f890401d7e1ab6a99509f939dc512e9b33f0365370567c0c862294be9927ae /opt/odoo/odoo.tgz" | sha256sum -c -
 RUN chown odoo:odoo /opt/odoo/odoo.tgz
 
 
