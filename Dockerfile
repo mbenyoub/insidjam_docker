@@ -28,7 +28,7 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" > /etc/
                 python-zsi \
                 python-lasso
 
-ADD sources/pip-req.txt /opt/sources/pip-req.txt
+ADD sources/pip-checksums.txt /opt/sources/pip-checksums.txt
 # use wheels from our public wheelhouse for proper versions of listed packages
 # as described in sourced pip-req.txt
 # these are python dependencies for odoo and "apps" as precompiled wheel packages
@@ -36,7 +36,7 @@ ADD sources/pip-req.txt /opt/sources/pip-req.txt
 RUN pip install peep && \
     peep install --upgrade --use-wheel --no-index --pre \
         --find-links=https://wheelhouse.openerp-experts.net/trusty/odoo/ \
-        --requirement=/opt/sources/pip-req.txt
+        -r /opt/sources/pip-checksums.txt
 
 # must unzip this package to make it visible as an odoo external dependency
 RUN easy_install -UZ py3o.template
