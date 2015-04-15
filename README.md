@@ -30,11 +30,11 @@ You may use your own sources simply by binding your local Odoo folder to /opt/od
 Here are the current revisions from https://github.com/odoo/odoo for each docker tag
 
     # production grade
-    xcgd/odoo:7.0	25f5329deb4068ac737bf7ffdfe54046a46221da (branch 7.0)
-    xcgd/odoo:8.0	373539425e268f41d7d74e3f4e6f9d622863dcd4 (branch 8.0)
+    xcgd/odoo:7.0	d246e36c824931613229a6467e21d65d392a2fa3 (branch 7.0)
+    xcgd/odoo:8.0	ba54a668d425c6b2de37428184e788552dc11a1c (branch 8.0)
 
     # playing only
-    xcgd/odoo:latest	6f841038f33176bb89ac5bd4083703d95eed1ff2 (branch master/9alpha)
+    xcgd/odoo:latest	7d3cda215a85dd81571a5dde3753fd2f954f6ccf (branch master/9alpha)
 
 Prerequisites
 =============
@@ -75,6 +75,8 @@ Security Notes
 You'll note that we did not open ports to the outside world on the PostgreSQL container. This is for security reasons, NEVER RUN your PostgreSQL container with ports open to the outside world... Just `--link` the Odoo container (single host) or use an ambassador pattern (cluster).
 
 This is really important to understand. PostgreSQL is configured to trust everyone so better keep it firewalled. And before yelling madness please consider this: If someone gains access to your host and is able to launch a container and open a port for himself he's got your data anyways... he's on your machine. So keep that port closed and secure your host. Your database is as safe as your host is, no more.
+
+To prevent any data corruption during an image build, we use SHA256 algorithm to check file integrity of odoo archive and python requirement packages hosted on our repository.
 
 
   [1]: https://registry.hub.docker.com/u/xcgd/postgresql/
