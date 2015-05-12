@@ -1,3 +1,12 @@
+# sha256: 7qSEt42IsIx-duJJZ48kaV3nwwZjQQLxwewZ4s4Ea1Q
+msgpack_python==0.4.6
+
+# sha256: e0gNcMynw-x6n0gSo8Dc_87VxJUaw5VG8uIeYuDWLTo
+pyzmq==14.6.0
+
+# sha256: UK3AlwUWbgy4X77yAQ6idF08y-88biTVYEby2W6llpQ
+zmq_rpc==0.1
+
 # sha256: SFnyVScA6XRijRzfqyfJjW-lVEwR4tPuknkVRuhXWB4
 argparse
 
