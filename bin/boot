@@ -32,7 +32,7 @@ function start {
     fi
     sudo -i -u odoo /usr/bin/python \
                     /opt/odoo/sources/odoo/openerp-server \
-                    -c /opt/odoo/etc/odoo.conf \
+                    -c $file \
                     $*
 
     SERVICE_PID=$!
@@ -48,10 +48,15 @@ function on_exit() {
 trap on_exit INT TERM
 
 echo "Search conf file"
-file="/opt/odoo/etc/odoo.conf"
+if [[ -z "$ODOO_CONF" ]];
+then
+    file="/opt/odoo/etc/odoo.conf"
+else
+    file=$ODOO_CONF
+fi
 if [ ! -f "$file" ]; then
-    cp /opt/sources/odoo.conf /opt/odoo/etc/odoo.conf
-    echo "Copy template as conf file"
+    cp /opt/sources/odoo.conf $file 
+    echo "Copy template as conf file $file"
 fi
 chown -R odoo /opt/odoo
 echo "Running command..."
