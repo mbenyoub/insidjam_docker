@@ -68,6 +68,9 @@ If you want to change the Odoo configuration with your own file you can bind it 
 
     $ docker run --name="xcgd.odoo" -v /opt/odoo/instance1/etc:/opt/odoo/etc -p 8069:8069 --link pg93:db -d xcgd/odoo start
 
+If you want to use a specific configuration file, you can use the environment variable ODOO_CONF:
+
+    $ docker run -e ODOO_CONF=/etc/openerp.conf --name="xcgd.odoo" -v /opt/odoo/instance1/etc:/opt/odoo/etc -p 8069:8069 --link pg93:db -d xcgd/odoo start
 
 Security Notes
 ==============
