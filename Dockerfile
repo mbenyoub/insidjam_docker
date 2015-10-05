@@ -26,7 +26,9 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" > /etc/
                 python-pychart python-libxslt1 xfonts-base xfonts-75dpi \
                 libxrender1 libxext6 fontconfig \
                 python-zsi \
-                python-lasso
+                python-lasso \
+                libzmq3 \
+                gdebi
 
 ADD sources/pip-checksums.txt /opt/sources/pip-checksums.txt
 # use wheels from our public wheelhouse for proper versions of listed packages
@@ -43,7 +45,7 @@ RUN easy_install -UZ py3o.template
 
 # install wkhtmltopdf based on QT5
 ADD http://download.gna.org/wkhtmltopdf/0.12/0.12.2.1/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb /opt/sources/wkhtmltox.deb
-RUN dpkg -i /opt/sources/wkhtmltox.deb
+RUN gdebi -n /opt/sources/wkhtmltox.deb
 
 # create the odoo user
 RUN adduser --home=/opt/odoo --disabled-password --gecos "" --shell=/bin/bash odoo
