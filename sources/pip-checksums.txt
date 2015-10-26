@@ -1,4 +1,4 @@
-# sha256: 7qSEt42IsIx-duJJZ48kaV3nwwZjQQLxwewZ4s4Ea1Q
+# sha256: nAcGXGWbW7ekYFf1oK4_fSzR4fH46_XUzNeyjiJ4oFs
 msgpack_python==0.4.6
 
 # sha256: e0gNcMynw-x6n0gSo8Dc_87VxJUaw5VG8uIeYuDWLTo
