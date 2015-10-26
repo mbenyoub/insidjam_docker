@@ -53,12 +53,11 @@ RUN adduser --home=/opt/odoo --disabled-password --gecos "" --shell=/bin/bash od
 # ADD sources for the oe components
 # ADD an URI always gives 600 permission with UID:GID 0 => need to chmod accordingly
 # /!\ carefully select the source archive depending on the version
-ADD https://wheelhouse.openerp-experts.net/odoo/odoo9.tgz /opt/odoo/odoo.tgz
+ADD https://wheelhouse.xcg.io/odoo/odoo9.tgz /opt/odoo/odoo.tgz
 RUN echo "84cfce9dd60ac40cfcbf9d7cc1f3eaf1eb2d1f88d5f9b6bcdfea70ae6573c2bb /opt/odoo/odoo.tgz" | sha256sum -c -
 RUN chown odoo:odoo /opt/odoo/odoo.tgz
 
-
-# changing user is required by openerp which won't start with root
+# changing user is required by odoo which won't start with root
 # makes the container more unlikely to be unwillingly changed in interactive mode
 USER odoo
 
@@ -68,7 +67,6 @@ RUN /bin/bash -c "mkdir -p /opt/odoo/{bin,etc,sources/odoo,additional_addons,dat
         rm /opt/odoo/odoo.tgz
 
 RUN /bin/bash -c "mkdir -p /opt/odoo/var/{run,log,egg-cache}"
-
 
 # Execution environment
 USER 0
