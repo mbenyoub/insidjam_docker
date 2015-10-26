@@ -27,7 +27,8 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" > /etc/
                 libxrender1 libxext6 fontconfig \
                 python-zsi \
                 python-lasso \
-                libzmq3
+                libzmq3 \
+                gdebi
 
 ADD sources/pip-checksums.txt /opt/sources/pip-checksums.txt
 # use wheels from our public wheelhouse for proper versions of listed packages
@@ -36,7 +37,7 @@ ADD sources/pip-checksums.txt /opt/sources/pip-checksums.txt
 
 RUN pip install peep && \
     peep install --upgrade --use-wheel --no-index --pre \
-        --find-links=https://wheelhouse.openerp-experts.net/trusty/odoo/ \
+        --find-links=https://wheelhouse.xcg.io/trusty/odoo/ \
         -r /opt/sources/pip-checksums.txt
 
 # must unzip this package to make it visible as an odoo external dependency
@@ -44,7 +45,7 @@ RUN easy_install -UZ py3o.template
 
 # install wkhtmltopdf based on QT5
 ADD http://download.gna.org/wkhtmltopdf/0.12/0.12.2.1/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb /opt/sources/wkhtmltox.deb
-RUN dpkg -i /opt/sources/wkhtmltox.deb
+RUN gdebi -n /opt/sources/wkhtmltox.deb
 
 # create the odoo user
 RUN adduser --home=/opt/odoo --disabled-password --gecos "" --shell=/bin/bash odoo
@@ -52,12 +53,12 @@ RUN adduser --home=/opt/odoo --disabled-password --gecos "" --shell=/bin/bash od
 # ADD sources for the oe components
 # ADD an URI always gives 600 permission with UID:GID 0 => need to chmod accordingly
 # /!\ carefully select the source archive depending on the version
-ADD https://wheelhouse.openerp-experts.net/odoo/odoo8.tgz /opt/odoo/odoo.tgz
+ADD https://wheelhouse.xcg.io/odoo/odoo8.tgz /opt/odoo/odoo.tgz
 RUN echo "1df8d5a3ec29f83435340f46e771157d70b719ac789976a575ba2697078c68c3 /opt/odoo/odoo.tgz" | sha256sum -c -
 RUN chown odoo:odoo /opt/odoo/odoo.tgz
 
 
-# changing user is required by openerp which won't start with root
+# changing user is required by odoo which won't start with root
 # makes the container more unlikely to be unwillingly changed in interactive mode
 USER odoo
 
