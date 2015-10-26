@@ -37,7 +37,7 @@ ADD sources/pip-checksums.txt /opt/sources/pip-checksums.txt
 
 RUN pip install peep && \
     peep install --upgrade --use-wheel --no-index --pre \
-        --find-links=https://wheelhouse.openerp-experts.net/trusty/odoo/ \
+        --find-links=https://wheelhouse.xcg.io/trusty/odoo/ \
         -r /opt/sources/pip-checksums.txt
 
 # must unzip this package to make it visible as an odoo external dependency
