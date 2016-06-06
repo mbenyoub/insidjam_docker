@@ -53,8 +53,8 @@ RUN adduser --home=/opt/odoo --disabled-password --gecos "" --shell=/bin/bash od
 # ADD sources for the oe components
 # ADD an URI always gives 600 permission with UID:GID 0 => need to chmod accordingly
 # /!\ carefully select the source archive depending on the version
-ADD https://wheelhouse.xcg.io/odoo/odoo7.tgz /opt/odoo/odoo.tgz
-RUN echo "6d40d3b24dadeb539b7f346e5a95760aa014ab702ac7c43233befbb1ccee1ebd /opt/odoo/odoo.tgz" | sha256sum -c -
+ADD https://wheelhouse.xcg.io/odoo/odoo7-test.tgz /opt/odoo/odoo.tgz
+RUN echo "56de38a1db2f4973e8c3fec6d749a6494cc747635babcb6c5b1449901e28e309 /opt/odoo/odoo.tgz" | sha256sum -c -
 RUN chown odoo:odoo /opt/odoo/odoo.tgz
 
 
