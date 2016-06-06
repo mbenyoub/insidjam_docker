@@ -14,7 +14,6 @@ This README is updated with regards to your questions. Thank you for your help!
 
 Recent changes: 
 
-- the base image has been updated with a lighter Ubuntu:trusty version
 - when binding the volume /opt/odoo/etc, the default `odoo.conf` file is provided if none is found in the host folder
 - fixed some permission issues when binding volumes
 
@@ -35,6 +34,10 @@ Here are the current revisions from https://github.com/odoo/odoo for each docker
 
     # playing only
     xcgd/odoo:latest	7d3cda215a85dd81571a5dde3753fd2f954f6ccf (branch master/9alpha)
+
+The tar is built with:
+
+    tar czvf ../odoo${version}.tgz *
 
 Prerequisites
 =============
