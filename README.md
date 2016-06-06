@@ -29,8 +29,8 @@ You may use your own sources simply by binding your local Odoo folder to /opt/od
 Here are the current revisions from https://github.com/odoo/odoo for each docker tag
 
     # production grade
-    xcgd/odoo:7.0	d246e36c824931613229a6467e21d65d392a2fa3 (branch 7.0)
-    xcgd/odoo:8.0	ba54a668d425c6b2de37428184e788552dc11a1c (branch 8.0)
+    xcgd/odoo:7.0	a0484cbe45abb5dc393d3229ee1c6d24a4dfae23 (branch 7.0)
+    xcgd/odoo:8.0	859fe655d295b83d86d5969e301b8f6bcc61c2d1 (branch 8.0)
 
     # playing only
     xcgd/odoo:latest	7d3cda215a85dd81571a5dde3753fd2f954f6ccf (branch master/9alpha)

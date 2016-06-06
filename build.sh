@@ -1,3 +1,3 @@
 #!/bin/bash
-docker build --rm -t xcgd/odoo:8.0 .
+docker build --rm -t xcgd/odoo:$(hg identify -b) .
 
