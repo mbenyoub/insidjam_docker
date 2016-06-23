@@ -9,26 +9,34 @@ RUN echo 'LANG="en_US.UTF-8"' > /etc/default/locale
 # It should be the same key as https://www.postgresql.org/media/keys/ACCC4CF8.asc
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
 
+# Add the XCG PGP key to fetch Lasso packages.
+# Ref: <https://launchpad.net/~houzefa-abba/+archive/ubuntu/lasso>.
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 71B8509B4892AB1551E68E55C4A2424613BE37AF
+
+# Install this beforehand in order to add https PPA providers.
+RUN apt-get update && apt-get -yq install apt-transport-https
+
 # Add PostgreSQL's repository. It contains the most recent stable release
 #     of PostgreSQL, ``9.4``.
+# Add Lasso's repository
 # install dependencies as distrib packages when system bindings are required
 # some of them extend the basic odoo requirements for a better "apps" compatibility
 # most dependencies are distributed as wheel packages at the next step
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
-        apt-get update && \
-        apt-get -yq install \
-            adduser \
-            ghostscript \
-            postgresql-client-9.4 \
-            python \
-                python-pip \
-                python-imaging \
-                python-pychart python-libxslt1 xfonts-base xfonts-75dpi \
-                libxrender1 libxext6 fontconfig \
-                python-zsi \
-                python-lasso \
-                libzmq3 \
-                gdebi
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+RUN echo "deb https://ppa.xcg.io/lasso trusty main" > /etc/apt/sources.list.d/lasso.list
+RUN apt-get update && apt-get -yq install \
+    adduser \
+    ghostscript \
+    postgresql-client-9.4 \
+    python \
+    python-pip \
+    python-imaging \
+    python-pychart python-libxslt1 xfonts-base xfonts-75dpi \
+    libxrender1 libxext6 fontconfig \
+    python-zsi \
+    liblasso3 python-lasso \
+    libzmq3 \
+    gdebi
 
 ADD sources/pip-checksums.txt /opt/sources/pip-checksums.txt
 # use wheels from our public wheelhouse for proper versions of listed packages
