@@ -31,7 +31,7 @@ RUN apt-get update && apt-get -yq install \
     python \
     python-pip \
     python-imaging \
-    python-pychart python-libxslt1 xfonts-base xfonts-75dpi openpyxl \
+    python-pychart python-libxslt1 xfonts-base xfonts-75dpi \
     libxrender1 libxext6 fontconfig \
     python-zsi \
     liblasso3 python-lasso \
