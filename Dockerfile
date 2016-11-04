@@ -1,5 +1,5 @@
 FROM xcgd/ubuntu4base
-MAINTAINER alexandre.allouche@xcg-consulting.fr
+MAINTAINER benyoub@gmail.com
 
 # generate locales
 RUN locale-gen en_US.UTF-8 && update-locale
@@ -31,7 +31,7 @@ RUN apt-get update && apt-get -yq install \
     python \
     python-pip \
     python-imaging \
-    python-pychart python-libxslt1 xfonts-base xfonts-75dpi \
+    python-pychart python-libxslt1 xfonts-base xfonts-75dpi openpyxl \
     libxrender1 libxext6 fontconfig \
     python-zsi \
     liblasso3 python-lasso \
