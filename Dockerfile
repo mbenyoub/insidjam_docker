@@ -43,6 +43,7 @@ ADD sources/pip-checksums.txt /opt/sources/pip-checksums.txt
 # as described in sourced pip-req.txt
 # these are python dependencies for odoo and "apps" as precompiled wheel packages
 
+RUN pip install psycogreen==1.0
 RUN pip install openpyxl==2.3.2
 RUN pip install peep && \
     peep install --upgrade --use-wheel --no-index --pre \
